@@ -1,18 +1,13 @@
+import java.io.BufferedReader;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.LineNumberReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.io.Reader;
+
 
 /**
  *
@@ -67,6 +62,48 @@ public class Matia_Mukasa_Input_Output_ICP {
         setItem_price();
         setItem_quantity();
     }
+    
+    public void createBackup() throws FileNotFoundException, IOException{
+        try {  
+              
+            Reader reader = new FileReader("C:\\Users\\TR3P0L3M\\Documents\\NetBeansProjects\\LAB-EXERCISES-ICP\\Essentials_stock.txt");  
+  
+            try(BufferedReader bufferedReader =  
+                new BufferedReader(reader)){  
+  
+                String line = bufferedReader.readLine();  
+                while(line != null) {
+                    PrintWriter printwriter = null;
+        
+                    try {
+                        printwriter = new PrintWriter(new FileOutputStream("backup_Essentials_stock.txt", true));
+
+
+
+                    }catch(FileNotFoundException fnfe){
+
+                        fnfe.getMessage();
+
+                    }
+                    //
+                    File file = new File("backup_Essentials_stock.txt");
+                    if(file.exists()){
+                        line = bufferedReader.readLine();
+                        printwriter.println(line);
+                        System.out.println(line);
+                        printwriter.close();
+                }
+        } 
+
+    }catch(IOException e){
+        
+        System.out.println(e);
+    }
+    }catch (IOException e){
+        System.out.println(e);
+    }
+        
+    }
 
     public void printData(){
         System.out.println("Item Name" + "        "+"Item Price" + "        " + "Item Quantity" + "         ");
@@ -78,7 +115,8 @@ public class Matia_Mukasa_Input_Output_ICP {
         PrintWriter printwriter = null;
         
         try {
-            printwriter = new PrintWriter(new FileOutputStream("Written2File.txt", true));
+            printwriter = new PrintWriter(new FileOutputStream("Essentials_stock.txt", true));
+            
             
 
         }catch(FileNotFoundException fnfe){
@@ -87,29 +125,16 @@ public class Matia_Mukasa_Input_Output_ICP {
 
         }
         //printwriter.println("Item Name" + "      "+"Item Price" + "         " + "Item Quantity");
-        File file = new File("Written2File.txt");
+        File file = new File("Essentials_stock.txt");
         if(file.exists()){
-            try {
-                FileReader fr = new FileReader(file);
-                LineNumberReader lr = new LineNumberReader(fr);
-                int LineNumberCount = 0;
-                if(LineNumberCount > 0){
-                    printwriter.println("Item Name" + "      "+"Item Price" + "         " + "Item Quantity");
-                    printwriter.print("   " +get_ItemName() + "            " + get_ItemPrice() + "                 " + get_ItemQuantity());
-                    printwriter.println();
-                } else{
-                    printwriter.print("   " +get_ItemName() + "            " + get_ItemPrice() + "                 " + get_ItemQuantity());
-                    printwriter.println();
-                }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Matia_Mukasa_Input_Output_ICP.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-//        printwriter.print("   " +get_ItemName() + "            " + get_ItemPrice() + "                 " + get_ItemQuantity());
+            printwriter.println("   " +get_ItemName() + "            " + get_ItemPrice() + "                 " + get_ItemQuantity());//        printwriter.print("   " +get_ItemName() + "            " + get_ItemPrice() + "                 " + get_ItemQuantity());
 //        printwriter.println();
+            //printwriter.println();
 
         printwriter.close();
     }
+    }
+
 
 
 
@@ -121,12 +146,19 @@ public class Matia_Mukasa_Input_Output_ICP {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // TODO code application logic here
         Matia_Mukasa_Input_Output_ICP oneitem = new Matia_Mukasa_Input_Output_ICP();
-        oneitem.getData();
-        oneitem.printData();
-        oneitem.WriteText2File();
+        for(int i =0; i < 9;i++){
+            oneitem.getData();
+            oneitem.printData();
+            oneitem.WriteText2File();
+            
+                    
+        }
+        oneitem.createBackup();
+        
+        
         
     }
     
